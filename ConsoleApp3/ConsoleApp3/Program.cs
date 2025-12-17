@@ -62,7 +62,13 @@ class Program
             ConsoleKey inputKey;
             if (!TryGetInput(out inputKey)) continue;
             
-            
+            // 종료 처리
+            if (inputKey == ConsoleKey.Q)
+            {
+                Console.WriteLine("\n게임을 종료합니다");
+                break;
+            }
+
             // 로직 수행 (이동, 폭탄 밀기)
         }
 
