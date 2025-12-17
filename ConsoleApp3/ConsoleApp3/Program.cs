@@ -40,7 +40,21 @@ class Program
     
     static void Main(string[] args)
     {
+        // 안내 멘트 출력
+        PrintGuideText();
         
+        while (true)
+        {
+            // 게임 로직
+        }
+    }
+
+    static void PrintGuideText()
+    {
+        Console.Clear();
+        Console.WriteLine("W : 위로 / S : 아래로 / A : 왼쪽 / D : 오른쪽 / Q : 종료");
+        Console.WriteLine("모든 폭탄을 목표지점으로 옮기세요");
+        Console.WriteLine();
     }
 
     static void PrintMap()
