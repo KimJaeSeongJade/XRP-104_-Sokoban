@@ -74,7 +74,11 @@ class Program
             // 다음 위치가 어디인지 판단하고
             Position nextPos = GetNextPosition(inputKey);
             // 맵 밖이진 않은지?
+            if(IsOutOfArray(nextPos)) continue;
             // 벽이진 않은지?
+            char targetTile = GetTile(nextPos);
+            if (targetTile == WALL) continue;
+
             // 이동 구현
         }
 
@@ -147,6 +151,19 @@ class Program
             X = newX,
             Y = newY
         };
+    }
+
+    static char GetTile(Position pos)
+    {
+        return map[pos.Y, pos.X];
+    }
+
+    static bool IsOutOfArray(Position pos)
+    {
+        bool outX = pos.X < 0 || map.GetLength(1) <= pos.X;
+        bool outY = pos.Y < 0 || map.GetLength(1) <= pos.Y;
+        
+        return outX || outY;
     }
 
     static void PrintMap()
