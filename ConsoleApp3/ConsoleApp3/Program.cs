@@ -7,6 +7,7 @@
 
 using System;
 using System.Runtime.ExceptionServices;
+using System.Text;
 
 class Program
 {
@@ -42,6 +43,8 @@ class Program
     
     static void Main(string[] args)
     {
+        Console.OutputEncoding = Encoding.UTF8;
+        
         // 안내 멘트 출력
         PrintGuideText();
         
@@ -265,6 +268,21 @@ class Program
     /// <returns>변환된 타일</returns>
     static char GetOriginTile(char tile)
     {
+        switch (tile)
+        {
+            case PLAYER:
+                return EMPTY;
+            case PLAYER_ON_GOAL:
+                return GOAL;
+            case BOMB:
+                return EMPTY;
+            case BOMB_ON_GOAL:
+                return GOAL;
+            default:
+                return tile;
+        }
+
+        /*
         return tile switch
         {
             PLAYER => EMPTY,
@@ -273,6 +291,7 @@ class Program
             BOMB_ON_GOAL => GOAL,
             _ => tile
         };
+        */
     }
 
     /// <summary>
@@ -302,12 +321,12 @@ class Program
         return true;
     }
 
-    static Position GetDirection(Position form, Position to)
+    static Position GetDirection(Position from, Position to)
     {
         return new Position()
         {
-            X = to.X - form.X,
-            Y = to.Y - form.Y
+            X = to.X - from.X,
+            Y = to.Y - from.Y
         };
     }
 
@@ -329,7 +348,15 @@ class Program
         {
             for (int j = 0; j < map.GetLength(1); j++)
             {
-                Console.Write(map[i, j]);
+                char tile = map[i, j];
+                // 🧱🤔😵💣🕳️✅
+                if(tile == WALL) Console.Write("🧱");
+                else if(tile == PLAYER) Console.Write("🤔");
+                else if(tile == PLAYER_ON_GOAL) Console.Write("😵");
+                else if(tile == BOMB) Console.Write("💣");
+                else if(tile == BOMB_ON_GOAL) Console.Write("✅");
+                else if(tile == GOAL) Console.Write("🕳️");
+                else Console.Write("  ");
             }
             Console.WriteLine();
         }
