@@ -69,8 +69,9 @@ class Program
                 break;
             }
 
-            // 로직 수행 (이동, 폭탄 밀기)
+            // 로직 수행 
             
+            // 이동 가능한지 판단.
             Position nextPos = GetNextPosition(inputKey);
             
             if(IsOutOfArray(nextPos)) continue;
@@ -78,7 +79,16 @@ class Program
             char targetTile = GetTile(nextPos);
             if (targetTile == WALL) continue;
 
-            // 이동 구현
+            // 이동 구현 (이동, 폭탄 밀기)
+            
+            // 플레이어 단순 이동 (Goal 위로 이동하는 것도 포함)
+            if(targetTile == EMPTY || targetTile == GOAL)
+            {
+                Move(_playerPos, nextPos);
+                _playerPos = nextPos;
+                _moveCount++;
+            }
+            // 폭탄을 밀면서 이동
         }
 
         Console.WriteLine("게임 끝");
@@ -135,6 +145,11 @@ class Program
                inputKey == ConsoleKey.Q;
     }
 
+    /// <summary>
+    /// 입력받은 키에 따라 다음 좌표정보를 반환하는 함수
+    /// </summary>
+    /// <param name="inputKey">입력 키</param>
+    /// <returns>입력 키에 따른 다음 좌표 구조체</returns>
     static Position GetNextPosition(ConsoleKey inputKey)
     {
         int newX = _playerPos.X;
@@ -152,11 +167,31 @@ class Program
         };
     }
 
+    /// <summary>
+    /// 입력받은 좌표의 타일을 반환하는 함수
+    /// </summary>
+    /// <param name="pos">입력 위치</param>
+    /// <returns>배열의 char 문자 반환</returns>
     static char GetTile(Position pos)
     {
         return map[pos.Y, pos.X];
     }
 
+    /// <summary>
+    /// 입력받은 좌표의 타일을 바꾸는 함수
+    /// </summary>
+    /// <param name="pos">바꿀 위치</param>
+    /// <param name="tile">대상 타일</param>
+    static void SetTile(Position pos, char tile)
+    {
+        map[pos.Y, pos.X] = tile;
+    }
+
+    /// <summary>
+    /// 입력받은 위치가 배열의 범위 바깥인지 판단하는 함수
+    /// </summary>
+    /// <param name="pos">입력 위치</param>
+    /// <returns>배열 인덱스 범위 밖이라면 true, 아니라면 false</returns>
     static bool IsOutOfArray(Position pos)
     {
         bool outX = pos.X < 0 || map.GetLength(1) <= pos.X;
@@ -165,6 +200,45 @@ class Program
         return outX || outY;
     }
 
+    // 플레이어 이동으로 먼저 구현, 이후 박스 이동에도 재사용 예정
+    static void Move(Position from, Position to)
+    {
+        // 출발지점을 기존 타일로 바꾸기 
+        char originTile = GetOriginTile(GetTile(from));
+        SetTile(from, originTile);
+        // 다음 위치에 표시될 심볼을 결정 후 세팅
+        char targetTile = GetTile(to);
+        char nextTile = GetConvertTile(PLAYER, targetTile);
+        SetTile(to, nextTile);
+         
+    }
+
+    static char GetConvertTile(char mover, char under)
+    {
+        if (under == GOAL)
+        {
+            return PLAYER_ON_GOAL;
+        }
+        else
+        {
+            return PLAYER;
+        }
+    }
+
+
+    static char GetOriginTile(char tile)
+    {
+        return tile switch
+        {
+            PLAYER => EMPTY,
+            PLAYER_ON_GOAL => GOAL,
+            _ => tile
+        };
+    }
+
+    /// <summary>
+    /// 맵 출력 함수
+    /// </summary>
     static void PrintMap()
     {
         for (int i = 0; i < map.GetLength(0); i++)
