@@ -123,6 +123,10 @@ class Program
         Console.WriteLine();
     }
 
+    /// <summary>
+    /// 게임이 클리어 된 상황인지 판단하는 함수
+    /// </summary>
+    /// <returns>클리어 되었다면 true, 아니라면 false</returns>
     static bool IsGameClear()
     {
         for (int y = 0; y < map.GetLength(0); y++)
@@ -219,7 +223,12 @@ class Program
         return outX || outY;
     }
 
-    // 플레이어 이동으로 먼저 구현, 이후 박스 이동에도 재사용 예정
+    /// <summary>
+    /// 게임 오브젝트의 위치를 이동시킨다
+    /// </summary>
+    /// <param name="from">이전 위치</param>
+    /// <param name="to">이동 후 위치</param>
+    /// <param name="target">이동시킬 대상</param>
     static void Move(Position from, Position to, char target)
     {
         // 출발지점을 기존 타일로 바꾸기 
@@ -232,6 +241,12 @@ class Program
          
     }
 
+    /// <summary>
+    /// 이동할 위치에 표시될 타일을 구하는 함수
+    /// </summary>
+    /// <param name="mover">이동하는 주체</param>
+    /// <param name="under">이동할 곳의 타일</param>
+    /// <returns>이동 시 바뀌어야 할 타일</returns>
     static char GetConvertTile(char mover, char under)
     {
         // 플레이어라는 조건으로 작성.
@@ -295,7 +310,7 @@ class Program
     }
 
     /// <summary>
-    /// 박스를 미는 함수
+    /// 폭탄을 미는 함수
     /// </summary>
     /// <param name="bombPos">폭탄의 위치</param>
     /// <returns>폭탄을 성공적으로 밀었다면 true, 아니라면 false</returns>
