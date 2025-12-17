@@ -6,6 +6,8 @@
 // 5. 2~4 반복
 
 using System;
+using System.Runtime.ExceptionServices;
+
 class Program
 {
     private const char PLAYER = 'P';        // 플레이어,
@@ -20,11 +22,11 @@ class Program
     {
         { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' },
         { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-        { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
         { '#', ' ', ' ', 'B', ' ', ' ', ' ', ' ', ' ', '#' },
-        { '#', ' ', ' ', ' ', 'P', 'G', ' ', ' ', ' ', '#' },
-        { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-        { '#', ' ', ' ', 'B', ' ', ' ', 'G', ' ', ' ', '#' },
+        { '#', ' ', ' ', ' ', ' ', 'G', ' ', ' ', ' ', '#' },
+        { '#', ' ', ' ', ' ', 'P', ' ', ' ', ' ', ' ', '#' },
+        { '#', ' ', ' ', ' ', ' ', 'G', ' ', ' ', ' ', '#' },
+        { '#', ' ', ' ', 'B', ' ', ' ', ' ', ' ', ' ', '#' },
         { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
         { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
         { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' }
@@ -49,9 +51,18 @@ class Program
             PrintMoveCount();
             PrintMap();
             
+            // 클리어 시 반복 종료
+            if(IsGameClear())
+            {
+                PrintClearText();
+                break;
+            }
+
             // 사용자 입력
             // 로직 수행 (이동, 폭탄 밀기)
         }
+
+        Console.WriteLine("게임 끝");
     }
 
     static void PrintGuideText()
@@ -66,6 +77,30 @@ class Program
     {
         Console.SetCursorPosition(0,4);
         Console.WriteLine($"이동 거리  : {_moveCount}");
+        Console.WriteLine();
+    }
+
+    static bool IsGameClear()
+    {
+        for (int y = 0; y < map.GetLength(0); y++)
+        {
+            for (int x = 0; x < map.GetLength(1); x++)
+            {
+                if (map[y, x] == BOMB || map[y, x] == GOAL)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    static void PrintClearText()
+    {
+        Console.WriteLine();
+        Console.WriteLine("축하합니다. 클리어 하셨습니다");
+        Console.WriteLine($"총 이동 거리 : {_moveCount}");
         Console.WriteLine();
     }
 
