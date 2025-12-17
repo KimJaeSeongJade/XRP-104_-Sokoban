@@ -59,6 +59,10 @@ class Program
             }
 
             // 사용자 입력
+            ConsoleKey inputKey;
+            if (!TryGetInput(out inputKey)) continue;
+            
+            
             // 로직 수행 (이동, 폭탄 밀기)
         }
 
@@ -102,6 +106,18 @@ class Program
         Console.WriteLine("축하합니다. 클리어 하셨습니다");
         Console.WriteLine($"총 이동 거리 : {_moveCount}");
         Console.WriteLine();
+    }
+
+    static bool TryGetInput(out ConsoleKey inputKey)
+    {
+        ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+        inputKey = keyInfo.Key;
+        
+        return inputKey == ConsoleKey.W ||
+               inputKey == ConsoleKey.A ||
+               inputKey == ConsoleKey.S ||
+               inputKey == ConsoleKey.D ||
+               inputKey == ConsoleKey.Q;
     }
 
     static void PrintMap()
