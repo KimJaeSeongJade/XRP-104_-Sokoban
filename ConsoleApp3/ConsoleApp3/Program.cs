@@ -70,6 +70,12 @@ class Program
             }
 
             // 로직 수행 (이동, 폭탄 밀기)
+            
+            // 다음 위치가 어디인지 판단하고
+            Position nextPos = GetNextPosition(inputKey);
+            // 맵 밖이진 않은지?
+            // 벽이진 않은지?
+            // 이동 구현
         }
 
         Console.WriteLine("게임 끝");
@@ -124,6 +130,23 @@ class Program
                inputKey == ConsoleKey.S ||
                inputKey == ConsoleKey.D ||
                inputKey == ConsoleKey.Q;
+    }
+
+    static Position GetNextPosition(ConsoleKey inputKey)
+    {
+        int newX = _playerPos.X;
+        int newY = _playerPos.Y;
+
+        if (inputKey == ConsoleKey.W) newY--;
+        else if (inputKey == ConsoleKey.S) newY++;
+        else if (inputKey == ConsoleKey.A) newX--;
+        else if (inputKey == ConsoleKey.D) newX++;
+
+        return new Position()
+        {
+            X = newX,
+            Y = newY
+        };
     }
 
     static void PrintMap()
