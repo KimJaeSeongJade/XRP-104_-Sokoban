@@ -71,11 +71,10 @@ class Program
 
             // 로직 수행 (이동, 폭탄 밀기)
             
-            // 다음 위치가 어디인지 판단하고
             Position nextPos = GetNextPosition(inputKey);
-            // 맵 밖이진 않은지?
+            
             if(IsOutOfArray(nextPos)) continue;
-            // 벽이진 않은지?
+            
             char targetTile = GetTile(nextPos);
             if (targetTile == WALL) continue;
 
@@ -160,7 +159,6 @@ class Program
 
     static bool IsOutOfArray(Position pos)
     {
-                   // 0미만?                  10 이상?
         bool outX = pos.X < 0 || map.GetLength(1) <= pos.X;
         bool outY = pos.Y < 0 || map.GetLength(0) <= pos.Y;
         
